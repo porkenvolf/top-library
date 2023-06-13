@@ -2,11 +2,60 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=\, initial-scale=1.0" />
-        <link rel="stylesheet" href="./css/equalize.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="./css/style.css" />
         <script src="./js/script.js" defer></script>
         <title>Library</title>
     </head>
-    <body></body>
+    <body class="dark">
+        <div class="container">
+            <button id="addBook">
+                <img src="./svg/plus-circle.svg" alt="" />
+            </button>
+            <table id="books"></table>
+
+            <div id="modal-addBook" class="modal">
+                <div class="modal-body">
+                    <div class="top-bar">
+                        <h1>Add a book!</h1>
+                        <button id="btnModalClose">
+                            <img src="./svg/close.svg" alt="" />
+                        </button>
+                    </div>
+                    <form action="">
+                        <ul>
+                            <li>
+                                <label for="author" hidden> Author: </label>
+                                <input
+                                    type="text"
+                                    id="author"
+                                    placeholder="Author" />
+                            </li>
+                            <li>
+                                <label for="title" hidden> Title: </label>
+                                <input
+                                    type="text"
+                                    id="title"
+                                    placeholder="Title" />
+                            </li>
+                            <li>
+                                <label for="status" hidden> Status: </label>
+                                <select name="status" id="status">
+                                    <option value="Not read">Not read</option>
+                                    <option value="Already read">
+                                        Already read
+                                    </option>
+                                </select>
+                            </li>
+                            <li>
+                                <button id="addBookSubmit" type="submit">
+                                    Let's go!
+                                </button>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
