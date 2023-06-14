@@ -43,24 +43,36 @@ ul {
 th {
     padding: 20px 30px;
 }
+.container td .icon {
+    width: 1.5rem;
+    border: none;
+}
 .container th {
     border-bottom: 1px solid var(--border);
 }
-.container > button {
+.container button {
     align-self: flex-end;
     background-color: transparent;
     border: none;
-    width: 5rem;
-    height: 3rem;
-    padding: 5px;
+
     border-radius: 5px;
 }
 button img {
     filter: invert(0.9);
     height: 100%;
+    pointer-events: none;
 }
 button:hover {
     background-color: var(--primary);
+}
+.buttonTopBar {
+    display: flex;
+    justify-content: end;
+}
+.buttonTopBar button {
+    width: 5rem;
+    height: 3rem;
+    padding: 5px;
 }
 
 /* 

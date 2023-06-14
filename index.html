@@ -9,9 +9,11 @@
     </head>
     <body class="dark">
         <div class="container">
-            <button id="addBook">
-                <img src="./svg/plus-circle.svg" alt="" />
-            </button>
+            <div class="buttonTopBar">
+                <button id="addBook">
+                    <img src="./svg/plus-circle.svg" alt="" />
+                </button>
+            </div>
             <table id="books"></table>
 
             <div id="modal-addBook" class="modal">
@@ -22,18 +24,24 @@
                             <img src="./svg/close.svg" alt="" />
                         </button>
                     </div>
-                    <form action="">
+                    <form action="" id="addBookForm">
                         <ul>
                             <li>
-                                <label for="author" hidden> Author: </label>
+                                <label for="author" hidden aria-required="true">
+                                    Author:
+                                </label>
                                 <input
+                                    required
                                     type="text"
                                     id="author"
                                     placeholder="Author" />
                             </li>
                             <li>
-                                <label for="title" hidden> Title: </label>
+                                <label for="title" hidden aria-required="true">
+                                    Title:
+                                </label>
                                 <input
+                                    required
                                     type="text"
                                     id="title"
                                     placeholder="Title" />

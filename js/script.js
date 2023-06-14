@@ -49,6 +49,9 @@ function displayBooks() {
                 td.innerText = book[prop];
                 tr.appendChild(td);
             }
+            const tdButtons = document.createElement("td");
+            tdButtons.appendChild(renderBookTableIcons(book));
+            tr.appendChild(tdButtons);
             table.appendChild(tr);
         });
     } else {
@@ -58,6 +61,25 @@ function displayBooks() {
         table.appendChild(document.createElement("tr")).appendChild(td);
     }
 }
+function renderBookTableIcons(book) {
+    const icons = document.createElement("div");
+
+    //DELETE
+    const iconDelete = document.createElement("img");
+    iconDelete.setAttribute("src", "./svg/delete-forever.svg");
+    const buttonDelete = document.createElement("button");
+    buttonDelete.classList.add("icon");
+    buttonDelete.appendChild(iconDelete);
+    buttonDelete.setAttribute("data-bookindex", myLibrary.indexOf(book));
+    buttonDelete.addEventListener("click", (event) => {
+        const index = event.target.getAttribute("data-bookindex");
+        myLibrary.splice(index, 1);
+        displayBooks();
+    });
+
+    //RETURN
+    return icons.appendChild(buttonDelete);
+}
 
 /* 
 █▄ ▄█ ▄▀▄ █▀▄ ▄▀▄ █   
@@ -65,8 +87,9 @@ function displayBooks() {
 const modalAddBook = document.querySelector("#modal-addBook");
 
 //SUBMIT
-const btnAddBookSubmit = document.querySelector("#addBookSubmit");
-btnAddBookSubmit.addEventListener("click", (event) => {
+const addBookForm = document.querySelector("#addBookForm");
+
+addBookForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const author = document.querySelector("#author");
     const title = document.querySelector("#title");
