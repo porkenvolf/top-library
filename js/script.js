@@ -1,12 +1,14 @@
 let myLibrary = [
-    new Book("Dude", "Lets roll", "not read yet"),
-    new Book("Dude2", "Lets roll2", "not read yet2"),
-    new Book("Dude", "Lets roll", "not read yet"),
-    new Book("Dude2", "Lets roll2", "not read yet2"),
-    new Book("Dude", "Lets roll", "not read yet"),
-    new Book("Dude2", "Lets roll2", "not read yet2"),
-    new Book("Dude", "Lets roll", "not read yet"),
-    new Book("Dude2", "Lets roll2", "not read yet2"),
+    new Book("Dude", "Lets roll", "Not read"),
+    new Book("Dude2", "Lets roll2", "Read"),
+    new Book("Dude", "Lets roll", "Not read"),
+    new Book("Dude2", "Lets roll2", "Read"),
+    new Book("Dude", "Lets roll", "Not read"),
+    new Book("Dude2", "Lets roll2", "Read"),
+    new Book("Dude", "Lets roll", "Not read"),
+    new Book("Dude2", "Lets roll2", "Read"),
+    new Book("Dude", "Lets roll", "Not read"),
+    new Book("Dude2", "Lets roll2", "Read"),
 ];
 
 function Book(author, title, status) {
@@ -15,6 +17,19 @@ function Book(author, title, status) {
     this.title = title;
     this.status = status;
 }
+Book.prototype.delete = function () {
+    myLibrary.splice(myLibrary.indexOf(this), 1);
+};
+Book.prototype.toggleRead = function () {
+    switch (this.status) {
+        case "Read":
+            this.status = "Not read";
+            break;
+        case "Not read":
+            this.status = "Read";
+            break;
+    }
+};
 
 function addBookToLibrary(author, title, status) {
     myLibrary.push(new Book(author, title, status));
@@ -45,9 +60,11 @@ function displayBooks() {
         myLibrary.forEach((book) => {
             const tr = document.createElement("tr");
             for (const prop in book) {
-                const td = document.createElement("td");
-                td.innerText = book[prop];
-                tr.appendChild(td);
+                if (book.hasOwnProperty(prop)) {
+                    const td = document.createElement("td");
+                    td.innerText = book[prop];
+                    tr.appendChild(td);
+                }
             }
             const tdButtons = document.createElement("td");
             tdButtons.appendChild(renderBookTableIcons(book));
@@ -63,6 +80,18 @@ function displayBooks() {
 }
 function renderBookTableIcons(book) {
     const icons = document.createElement("div");
+    //CHANGE READ STATUS
+    const iconRead = document.createElement("img");
+    iconRead.setAttribute("src", "./svg/read.svg");
+    const buttonRead = document.createElement("button");
+    buttonRead.classList.add("icon");
+    buttonRead.appendChild(iconRead);
+    buttonRead.setAttribute("data-bookindex", myLibrary.indexOf(book));
+    buttonRead.addEventListener("click", (event) => {
+        const index = event.target.getAttribute("data-bookindex");
+        myLibrary[index].toggleRead();
+        displayBooks();
+    });
 
     //DELETE
     const iconDelete = document.createElement("img");
@@ -73,12 +102,14 @@ function renderBookTableIcons(book) {
     buttonDelete.setAttribute("data-bookindex", myLibrary.indexOf(book));
     buttonDelete.addEventListener("click", (event) => {
         const index = event.target.getAttribute("data-bookindex");
-        myLibrary.splice(index, 1);
+        myLibrary[index].delete();
         displayBooks();
     });
 
     //RETURN
-    return icons.appendChild(buttonDelete);
+    icons.appendChild(buttonRead);
+    icons.appendChild(buttonDelete);
+    return icons;
 }
 
 /* 
