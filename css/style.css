@@ -13,6 +13,12 @@ body {
 ul {
     list-style-type: none;
 }
+header {
+    display: flex;
+    align-items: center;
+    border-bottom: 3px solid var(--border);
+    height: 5rem;
+}
 .container {
     position: relative;
     display: flex;
@@ -25,7 +31,7 @@ ul {
     grid-template-columns: 1fr 1fr auto auto;
     border: 2px solid var(--border);
     border-radius: 10px;
-    overflow: show;
+    overflow: hidden;
     max-width: 100%;
 }
 .container .table .row {
@@ -58,6 +64,18 @@ ul {
 }
 .table .header {
     font-weight: bold;
+}
+.table .status > div {
+    border-radius: 5px;
+    padding: 3px 15px;
+    font-weight: bold;
+    text-align: center;
+}
+.table .status > div.read {
+    background-color: green;
+}
+.table .status > div.notRead {
+    background-color: grey;
 }
 
 .container .icon {

@@ -1,14 +1,18 @@
 let myLibrary = [
-    new Book("Dude", "Lets roll", "Not read"),
-    new Book("Dude2", "Lets roll2", "Read"),
-    new Book("Dude", "Lets roll", "Not read"),
-    new Book("Dude2", "Lets roll2", "Read"),
-    new Book("Dude", "Lets roll", "Not read"),
-    new Book("Dude2", "Lets roll2", "Read"),
-    new Book("Dude", "Lets roll", "Not read"),
-    new Book("Dude2", "Lets roll2", "Read"),
-    new Book("Dude", "Lets roll", "Not read"),
-    new Book("Dude2", "Lets roll2", "Read"),
+    new Book("Harper Lee", "To Kill a Mockingbird", "Read"),
+    new Book("George Orwell", "1984", "Not read"),
+    new Book("J.K. Rowling", "Harry Potter and the Sorcerer's Stone", "Read"),
+    new Book("Jane Austen", "Pride and Prejudice", "Not read"),
+    new Book("F. Scott Fitzgerald", "The Great Gatsby", "Read"),
+    new Book("Markus Zusak", "The Book Thief", "Not read"),
+    new Book("J.R.R. Tolkien", "The Lord of the Rings", "Read"),
+    new Book("Ernest Hemingway", "The Old Man and the Sea", "Not read"),
+    new Book("Agatha Christie", "Murder on the Orient Express", "Read"),
+    new Book(
+        "Gabriel Garcia Marquez",
+        "One Hundred Years of Solitude",
+        "Not read"
+    ),
 ];
 
 function Book(author, title, status) {
@@ -51,7 +55,7 @@ function displayBooks() {
     row.classList.add("row");
     const keys = Object.keys(new Book());
     keys.forEach((element) => {
-        const cell = createCell(element.toUpperCase(), ["header"]);
+        const cell = createCell(element.toUpperCase(), ["header", element]);
         row.appendChild(cell);
     });
     const buttonsHeader = createCell("", ["header"]);
@@ -66,9 +70,22 @@ function displayBooks() {
             let propIndex = 1;
             for (const prop in book) {
                 if (book.hasOwnProperty(prop)) {
-                    const cell = createCell(book[prop]);
+                    const cell = createCell(book[prop], [prop]);
                     cell.style.gridColumn = propIndex;
                     propIndex += 1;
+
+                    if (prop === "status") {
+                        if (book[prop] === "Read") {
+                            for (const child of cell.children) {
+                                child.classList.add("read");
+                            }
+                        } else if (book[prop] === "Not read") {
+                            for (const child of cell.children) {
+                                child.classList.add("notRead");
+                            }
+                        }
+                    }
+
                     bookRow.appendChild(cell);
                 }
             }
