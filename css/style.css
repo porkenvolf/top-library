@@ -14,41 +14,55 @@ ul {
     list-style-type: none;
 }
 .container {
-    /* 
-    padding: 20px;
-    border: 3px solid var(--border);
-    border-radius: 10px;
-    background-color: var(--light-bg); */
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: min(100%, 800px);
 }
-
-.container table {
-    background-color: var(--mid-bg);
-    border-spacing: 0;
-    border-collapse: separate;
+.container .table {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto auto;
+    border: 2px solid var(--border);
     border-radius: 10px;
-    border: 3px solid var(--border);
-    overflow: hidden;
+    overflow: show;
+    max-width: 100%;
 }
-.container tr:nth-of-type(2n) {
-    background-color: var(--dark-bg);
+.container .table .row {
+    display: contents;
 }
-.container tr:hover {
+.container .table .row:hover > div:not(.header) {
     background-color: var(--light-bg);
 }
-.container td,
-th {
-    padding: 20px 30px;
+.table .cell {
+    min-width: 0;
+    display: flex;
+    overflow-wrap: break-word;
+    padding: 10px;
+    min-height: 3rem;
+    align-items: center;
 }
-.container td .icon {
-    width: 1.5rem;
+.cell > div {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+.table .row > div {
+    border-bottom: 1px solid var(--border);
+}
+.table .row:last-of-type > div {
     border: none;
 }
-.container th {
-    border-bottom: 1px solid var(--border);
+.table .row:nth-of-type(2n) > div {
+    background-color: var(--mid-bg);
+}
+.table .header {
+    font-weight: bold;
+}
+
+.container .icon {
+    width: 1.5rem;
+    border: none;
 }
 .container button {
     align-self: flex-end;

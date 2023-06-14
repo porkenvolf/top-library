@@ -46,39 +46,65 @@ const table = document.querySelector("#books");
 function displayBooks() {
     //CLEAR
     table.innerText = "";
-
-    //TABLE HEADERS
+    //table HEADERS
+    const row = document.createElement("div");
+    row.classList.add("row");
     const keys = Object.keys(new Book());
     keys.forEach((element) => {
-        const th = document.createElement("th");
-        th.innerText = element.toUpperCase();
-        table.appendChild(th);
+        const cell = createCell(element.toUpperCase(), ["header"]);
+        row.appendChild(cell);
     });
+    const buttonsHeader = createCell("", ["header"]);
+    row.appendChild(buttonsHeader);
+    table.appendChild(row);
 
-    //TABLE ELEMENTS
+    //table ELEMENTS
     if (myLibrary.length > 0) {
         myLibrary.forEach((book) => {
-            const tr = document.createElement("tr");
+            const bookRow = document.createElement("div");
+            bookRow.classList.add("row");
+            let propIndex = 1;
             for (const prop in book) {
                 if (book.hasOwnProperty(prop)) {
-                    const td = document.createElement("td");
-                    td.innerText = book[prop];
-                    tr.appendChild(td);
+                    const cell = createCell(book[prop]);
+                    cell.style.gridColumn = propIndex;
+                    propIndex += 1;
+                    bookRow.appendChild(cell);
                 }
             }
-            const tdButtons = document.createElement("td");
-            tdButtons.appendChild(renderBookTableIcons(book));
-            tr.appendChild(tdButtons);
-            table.appendChild(tr);
+
+            const outerButtons = document.createElement("div");
+            outerButtons.classList.add("cell");
+            outerButtons.style.gridColumn = propIndex;
+
+            const buttons = renderBooktableIcons(book);
+            outerButtons.appendChild(buttons);
+
+            bookRow.appendChild(outerButtons);
+            table.appendChild(bookRow);
         });
     } else {
-        const td = document.createElement("td");
-        td.colSpan = keys.length;
-        td.innerText = "Add some books to your library!";
-        table.appendChild(document.createElement("tr")).appendChild(td);
+        const cell = document.createElement("div");
+        cell.style.gridColumn = "1 / -1";
+        cell.innerText = "Add some books to your library!";
+        table.appendChild(cell);
     }
 }
-function renderBookTableIcons(book) {
+function createCell(content, classes) {
+    const cell = document.createElement("div");
+    const span = document.createElement("div");
+    span.innerText = content;
+    cell.appendChild(span);
+    if (classes) {
+        classes.forEach((element) => {
+            cell.classList.add(element);
+        });
+    }
+    cell.classList.add("cell");
+
+    return cell;
+}
+function renderBooktableIcons(book) {
     const icons = document.createElement("div");
     //CHANGE READ STATUS
     const iconRead = document.createElement("img");
