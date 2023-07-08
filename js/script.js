@@ -1,80 +1,69 @@
-let library = (function () {
-    //CACHE DOM
-    const container = document.querySelector(".container");
-    const table = document.querySelector("#books");
-    const btnAddBook = document.querySelector("#addBook");
+class Library {
+    #books = [];
 
-    //INIT
-    let books = [];
-    newBook("Harper Lee", "To Kill a Mockingbird", "Read", true);
-    newBook("George Orwell", "1984", "Not read", true);
-    newBook(
-        "J.K. Rowling",
-        "Harry Potter and the Sorcerer's Stone",
-        "Read",
-        true
-    );
-    newBook("Jane Austen", "Pride and Prejudice", "Not read", true);
-    newBook("F. Scott Fitzgerald", "The Great Gatsby", "Read", true);
-    newBook("Markus Zusak", "The Book Thief", "Not read", true);
-    newBook("J.R.R. Tolkien", "The Lord of the Rings", "Read", true);
-    newBook("Ernest Hemingway", "The Old Man and the Sea", "Not read", true);
-    newBook("Agatha Christie", "Murder on the Orient Express", "Read", true);
-    newBook(
-        "Gabriel Garcia Marquez",
-        "One Hundred Years of Solitude",
-        "Not read",
-        true
-    );
-
-    //BIND EVENTS
-    btnAddBook.addEventListener("click", (event) => {
-        container.appendChild(modalAddBook);
-    });
-
-    render();
-
-    function newBook(author, title, status, push) {
-        book = { author, title, status };
-        if (push) {
-            books.push(book);
-            render();
-        }
-        return book;
+    constructor() {
+        this.#cacheDOM();
+        this.#bindEvents();
+        this.newBook("Harper Lee", "To Kill a Mockingbird", "Read", true);
+        this.newBook("George Orwell", "1984", "Not read", true);
+        this.newBook(
+            "J.K. Rowling",
+            "Harry Potter and the Sorcerer's Stone",
+            "Read",
+            true
+        );
+        this.newBook("Jane Austen", "Pride and Prejudice", "Not read", true);
+        this.newBook("F. Scott Fitzgerald", "The Great Gatsby", "Read", true);
+        this.newBook("Markus Zusak", "The Book Thief", "Not read", true);
+        this.newBook("J.R.R. Tolkien", "The Lord of the Rings", "Read", true);
+        this.newBook(
+            "Ernest Hemingway",
+            "The Old Man and the Sea",
+            "Not read",
+            true
+        );
+        this.newBook(
+            "Agatha Christie",
+            "Murder on the Orient Express",
+            "Read",
+            true
+        );
+        this.newBook(
+            "Gabriel Garcia Marquez",
+            "One Hundred Years of Solitude",
+            "Not read",
+            true
+        );
     }
 
-    function deleteBook(id) {
-        books.splice(id, 1);
-    }
-    function toggleRead(id) {
-        const status = books[id].status;
-        switch (status) {
-            case "Read":
-                books[id].status = "Not read";
-                break;
-            case "Not read":
-                books[id].status = "Read";
-                break;
-        }
-    }
-    function render() {
+    #cacheDOM = () => {
+        this.container = document.querySelector(".container");
+        this.table = document.querySelector("#books");
+        this.btnAddBook = document.querySelector("#addBook");
+    };
+    #bindEvents = () => {
+        this.btnAddBook.addEventListener("click", (event) => {
+            this.container.appendChild(modalAddBook);
+        });
+    };
+    render = () => {
         //CLEAR
-        table.innerText = "";
+        this.table.innerText = "";
         //table HEADERS
         const row = document.createElement("div");
         row.classList.add("row");
-        const keys = Object.keys(newBook("", "", ""));
+        const keys = Object.keys(this.newBook("", "", ""));
         keys.forEach((element) => {
             const cell = createCell(element.toUpperCase(), ["header", element]);
             row.appendChild(cell);
         });
         const buttonsHeader = createCell("", ["header"]);
         row.appendChild(buttonsHeader);
-        table.appendChild(row);
+        this.table.appendChild(row);
 
         //table ELEMENTS
-        if (books.length > 0) {
-            books.forEach((book) => {
+        if (this.#books.length > 0) {
+            this.#books.forEach((book) => {
                 const bookRow = document.createElement("div");
                 bookRow.classList.add("row");
                 let propIndex = 1;
@@ -104,17 +93,17 @@ let library = (function () {
                 outerButtons.classList.add("cell");
                 outerButtons.style.gridColumn = propIndex;
 
-                const buttons = renderBooktableIcons(book);
+                const buttons = this.#renderBooktableIcons(book);
                 outerButtons.appendChild(buttons);
 
                 bookRow.appendChild(outerButtons);
-                table.appendChild(bookRow);
+                this.table.appendChild(bookRow);
             });
         } else {
             const cell = document.createElement("div");
             cell.style.gridColumn = "1 / -1";
             cell.innerText = "Add some books to your library!";
-            table.appendChild(cell);
+            this.table.appendChild(cell);
         }
 
         //AUX RENDER FUNCTIONS
@@ -132,44 +121,63 @@ let library = (function () {
 
             return cell;
         }
-        function renderBooktableIcons(book) {
-            const icons = document.createElement("div");
-            //CHANGE READ STATUS
-            const iconRead = document.createElement("img");
-            iconRead.setAttribute("src", "./svg/read.svg");
-            const buttonRead = document.createElement("button");
-            buttonRead.classList.add("icon");
-            buttonRead.appendChild(iconRead);
-            buttonRead.setAttribute("data-bookindex", books.indexOf(book));
-            buttonRead.addEventListener("click", (event) => {
-                const index = event.target.getAttribute("data-bookindex");
-                toggleRead(index);
-                render();
-            });
+    };
+    #renderBooktableIcons = (book) => {
+        const icons = document.createElement("div");
+        //CHANGE READ STATUS
+        const iconRead = document.createElement("img");
+        iconRead.setAttribute("src", "./svg/read.svg");
+        const buttonRead = document.createElement("button");
+        buttonRead.classList.add("icon");
+        buttonRead.appendChild(iconRead);
+        buttonRead.setAttribute("data-bookindex", this.#books.indexOf(book));
+        buttonRead.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-bookindex");
+            this.toggleRead(index);
+            this.render();
+        });
 
-            //DELETE
-            const iconDelete = document.createElement("img");
-            iconDelete.setAttribute("src", "./svg/delete-forever.svg");
-            const buttonDelete = document.createElement("button");
-            buttonDelete.classList.add("icon");
-            buttonDelete.appendChild(iconDelete);
-            buttonDelete.setAttribute("data-bookindex", books.indexOf(book));
-            buttonDelete.addEventListener("click", (event) => {
-                const index = event.target.getAttribute("data-bookindex");
-                deleteBook(index);
-                render();
-            });
+        //DELETE
+        const iconDelete = document.createElement("img");
+        iconDelete.setAttribute("src", "./svg/delete-forever.svg");
+        const buttonDelete = document.createElement("button");
+        buttonDelete.classList.add("icon");
+        buttonDelete.appendChild(iconDelete);
+        buttonDelete.setAttribute("data-bookindex", this.#books.indexOf(book));
+        buttonDelete.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-bookindex");
+            this.deleteBook(index);
+            this.render();
+        });
 
-            //RETURN
-            icons.appendChild(buttonRead);
-            icons.appendChild(buttonDelete);
-            return icons;
+        //RETURN
+        icons.appendChild(buttonRead);
+        icons.appendChild(buttonDelete);
+        return icons;
+    };
+    newBook = (author, title, status, push) => {
+        const book = { author, title, status };
+        if (push) {
+            this.#books.push(book);
+            this.render();
         }
-    }
-
-    //API
-    return { newBook };
-})();
+        return book;
+    };
+    deleteBook = (id) => {
+        this.#books.splice(id, 1);
+    };
+    toggleRead = (id) => {
+        const status = this.#books[id].status;
+        switch (status) {
+            case "Read":
+                this.#books[id].status = "Not read";
+                break;
+            case "Not read":
+                this.#books[id].status = "Read";
+                break;
+        }
+    };
+}
 
 /* 
 █▄ ▄█ ▄▀▄ █▀▄ ▄▀▄ █   
@@ -198,3 +206,8 @@ closeModal = (modal) => {
     modal.remove();
 };
 closeModal(modalAddBook);
+
+/* 
+█▀▄ █ █ █▄ █ 
+█▀▄ ▀▄█ █ ▀█  */
+const library = new Library();
